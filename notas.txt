@@ -1,0 +1,87 @@
+#instalar uicaliber
+npx uicaliber@latest
+
+UI Caliber - Visual AI Coding Assistant
+The free alternative to Stagewise - Transform your web development workflow with visual element selection and direct Cursor AI integration.
+
+✨ What is UI Caliber?
+UI Caliber is a powerful visual coding assistant that lets you select any element on your web page and send it directly to Cursor AI for instant code generation, debugging, and modifications. No more manual copying, pasting, or describing elements - just click and code!
+
+🚀 Key Features
+🎯 Visual Element Selection - Click any element to select it instantly
+🤖 Direct Cursor AI Integration - Send elements and instructions directly to Cursor AI chat
+⚡ Zero Manual Work - No copying, pasting, or manual descriptions needed
+🆓 Completely Free - No subscriptions, limits, or hidden costs
+🔧 Easy Setup - One command to install, one click to use
+How It Works
+Install UI Caliber: Run npx uicaliber@latest in your project root
+Install Extension: Install this extension in Cursor AI
+Select Elements: Click on elements in your proxied application (localhost:3100)
+Send to AI: Click "Send to Cursor AI" to automatically send instructions to Cursor AI chat
+Installation
+Step 1: Install UI Caliber Server
+npx uicaliber@latest
+
+Step 2: Install This Extension
+Open Cursor AI
+Go to Extensions (Ctrl+Shift+X)
+Search for "UI Caliber"
+Click Install
+Usage
+Start your development server (e.g., npm start on port 3000)
+Run npx uicaliber@latest in your project root
+Open the proxied URL (usually http://localhost:3100)
+Click on any element to select it
+Enter your instruction
+Click "Send to Cursor AI"
+Requirements
+Cursor AI
+Node.js 16+
+A running development server
+Support
+GitHub: https://github.com/benyamin-persia/uicaliber
+Issues: https://github.com/benyamin-persia/uicaliber/issues
+License
+MIT License - see LICENSE file for details.
+
+The free alternative to Stagewise - Transform your web development workflow with visual element selection and direct Cursor AI integration.
+
+✨ What is CodeCraft?
+CodeCraft is a powerful visual coding assistant that lets you select any element on your web page and send it directly to Cursor AI for instant code generation, debugging, and modifications. No more manual copying, pasting, or describing elements - just click and code!
+
+🚀 Key Features
+🎯 Visual Element Selection - Click any element to select it instantly
+🤖 Direct Cursor AI Integration - Send elements and instructions directly to Cursor AI chat
+⚡ Zero Manual Work - No copying, pasting, or manual descriptions needed
+🆓 Completely Free - No subscriptions, limits, or hidden costs
+🔧 Easy Setup - One command to install, one click to use
+How It Works
+Install CodeCraft: Run npx visual-codecraft@latest in your project root
+Install Extension: Install this extension in Cursor AI
+Select Elements: Click on elements in your proxied application (localhost:3100)
+Send to AI: Click "Send to Cursor AI" to automatically send instructions to Cursor AI chat
+Installation
+Step 1: Install CodeCraft Server
+npx visual-codecraft@latest
+
+Step 2: Install This Extension
+Open Cursor AI
+Go to Extensions (Ctrl+Shift+X)
+Search for "CodeCraft"
+Click Install
+Usage
+Start your development server (e.g., npm start on port 3000)
+Run npx visual-codecraft@latest in your project root
+Open the proxied URL (usually http://localhost:3100)
+Click on any element to select it
+Enter your instruction
+Click "Send to Cursor AI"
+Requirements
+Cursor AI
+Node.js 16+
+A running development server
+Support
+GitHub: https://github.com/benyamin-persia/codecraft
+Issues: https://github.com/benyamin-persia/codecraft/issues
+License
+MIT License - see LICENSE file for details.

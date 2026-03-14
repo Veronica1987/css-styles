@@ -1,0 +1,3074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern CSS/HTML Patterns — 2024-2026 Showcase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       RESET & BASE
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #1a1a2e;
+      background: #fafafa;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       UTILITY CLASSES
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .pattern-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #6c63ff;
+      background: rgba(108, 99, 255, 0.08);
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    .pattern-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .pattern-desc {
+      font-size: 1rem;
+      color: #555;
+      max-width: 600px;
+      margin-bottom: 32px;
+    }
+
+    .section-pad {
+      padding: 100px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       TABLE OF CONTENTS NAV
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .toc-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      height: 56px;
+    }
+
+    .toc-nav-inner {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .toc-nav-inner::-webkit-scrollbar { display: none; }
+
+    .toc-nav a {
+      white-space: nowrap;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #666;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .toc-nav a:hover {
+      color: #6c63ff;
+      background: rgba(108, 99, 255, 0.08);
+    }
+
+    .toc-nav .nav-brand {
+      font-weight: 800;
+      color: #1a1a2e;
+      font-size: 0.85rem;
+      margin-right: 16px;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       1. MESH GRADIENT HERO
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 32px 80px;
+      position: relative;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(108, 99, 255, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(255, 107, 107, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(72, 219, 251, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 90%, rgba(255, 159, 67, 0.15) 0%, transparent 50%),
+        #fafafa;
+      overflow: hidden;
+    }
+
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.4;
+      animation: heroFloat 8s ease-in-out infinite;
+    }
+
+    .hero-blob-1 {
+      width: 400px; height: 400px;
+      background: #6c63ff;
+      top: -100px; left: -100px;
+      animation-delay: 0s;
+    }
+
+    .hero-blob-2 {
+      width: 300px; height: 300px;
+      background: #ff6b6b;
+      top: 20%; right: -80px;
+      animation-delay: -3s;
+      animation-duration: 10s;
+    }
+
+    .hero-blob-3 {
+      width: 350px; height: 350px;
+      background: #48dbfb;
+      bottom: -80px; left: 30%;
+      animation-delay: -5s;
+      animation-duration: 12s;
+    }
+
+    @keyframes heroFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -20px) scale(1.05); }
+      66% { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    #hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #1a1a2e, #6c63ff, #ff6b6b);
+      background-size: 200% 200%;
+      animation: gradientShift 6s ease infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    #hero p {
+      font-size: 1.15rem;
+      color: #555;
+      max-width: 550px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-chips span {
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 24px;
+      background: white;
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+
+    .hero-chips span:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       2. CSS SCROLL-SNAP CAROUSEL (FIXED)
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #carousel { background: white; }
+
+    .carousel-wrapper {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .carousel-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      gap: 24px;
+      padding: 20px 32px 40px;
+      scrollbar-width: none;
+    }
+
+    .carousel-track::-webkit-scrollbar { display: none; }
+
+    .carousel-slide {
+      flex: 0 0 min(380px, 85vw);
+      scroll-snap-align: start;
+      border-radius: 28px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 3 / 4;
+      background: #eee;
+      transition: transform 0.4s ease;
+    }
+
+    .carousel-slide:hover { transform: scale(1.02); }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .carousel-slide .slide-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 40px 24px 24px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: white;
+    }
+
+    .carousel-slide .slide-caption h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .carousel-slide .slide-caption p {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+
+    .carousel-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      cursor: pointer;
+      font-size: 1.3rem;
+      color: #1a1a2e;
+      z-index: 10;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-nav-btn:hover {
+      background: #6c63ff;
+      color: white;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-prev { left: 12px; }
+    .carousel-next { right: 12px; }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding-bottom: 32px;
+    }
+
+    .carousel-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: none;
+      background: #ddd;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0;
+    }
+
+    .carousel-dot.active {
+      background: #6c63ff;
+      width: 28px;
+      border-radius: 10px;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       WAVE DIVIDER
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .wave-divider {
+      width: 100%;
+      line-height: 0;
+      overflow: hidden;
+    }
+
+    .wave-divider svg {
+      width: 100%;
+      height: 80px;
+      display: block;
+    }
+
+    .wave-divider.flip svg {
+      transform: scaleY(-1);
+    }
+
+    .wave-divider .wave-gradient-1 { fill: url(#waveGrad1); }
+    .wave-divider .wave-gradient-2 { fill: url(#waveGrad2); }
+    .wave-divider .wave-gradient-3 { fill: url(#waveGrad3); }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       3. MORPHING BLOB SHAPES
+       Animated organic shapes using
+       border-radius keyframes.
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #blobs {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a3e 100%);
+      overflow: hidden;
+      padding: 100px 32px;
+    }
+
+    .blob-container {
+      display: flex;
+      gap: 60px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .morph-blob {
+      width: 200px;
+      height: 200px;
+      animation: blobMorph 8s ease-in-out infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      text-align: center;
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .morph-blob:hover {
+      transform: scale(1.1);
+    }
+
+    .blob-1 {
+      background: linear-gradient(135deg, #6c63ff, #a855f7);
+      animation-delay: 0s;
+    }
+
+    .blob-2 {
+      background: linear-gradient(135deg, #ff6b6b, #ffa502);
+      animation-delay: -2s;
+      animation-duration: 10s;
+    }
+
+    .blob-3 {
+      background: linear-gradient(135deg, #0abde3, #48dbfb);
+      animation-delay: -4s;
+      animation-duration: 12s;
+    }
+
+    .blob-4 {
+      background: linear-gradient(135deg, #2d6a4f, #52b788);
+      animation-delay: -6s;
+      animation-duration: 9s;
+    }
+
+    @keyframes blobMorph {
+      0%, 100% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      }
+      25% {
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+      }
+      50% {
+        border-radius: 50% 60% 30% 60% / 30% 40% 70% 50%;
+      }
+      75% {
+        border-radius: 40% 60% 50% 40% / 60% 50% 40% 60%;
+      }
+    }
+
+    .blob-bg-float {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: heroFloat 15s ease-in-out infinite;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       4. 3D PERSPECTIVE TILT CARDS
+       Cards that tilt in 3D on hover.
+       Uses perspective and rotateX/Y.
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #tilt-cards { background: #fafafa; }
+
+    .tilt-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+      perspective: 1000px;
+    }
+
+    .tilt-card {
+      background: white;
+      border-radius: 24px;
+      padding: 48px 32px;
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      transform-style: preserve-3d;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tilt-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(108,99,255,0.05), rgba(255,107,107,0.05));
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .tilt-card:hover::before { opacity: 1; }
+
+    .tilt-card:hover {
+      transform: rotateY(-5deg) rotateX(5deg) translateZ(20px);
+      box-shadow: 20px 20px 60px rgba(0,0,0,0.1), -5px -5px 20px rgba(108,99,255,0.05);
+    }
+
+    .tilt-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 20px;
+      transform: translateZ(30px);
+    }
+
+    .tilt-icon-1 { background: linear-gradient(135deg, #e8e5ff, #d4cfff); }
+    .tilt-icon-2 { background: linear-gradient(135deg, #ffe5e5, #ffd4d4); }
+    .tilt-icon-3 { background: linear-gradient(135deg, #e5f7ff, #d4f0ff); }
+
+    .tilt-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    .tilt-card p { font-size: 0.9rem; color: #666; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       5. FIXED FULL-SCREEN BG + SCROLLING
+       Full-viewport image stays fixed while
+       content panels scroll over it.
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #sticky-scroll {
+      position: relative;
+      color: white;
+      background:
+        url('Images/stary-sky.jpg')
+        center / cover no-repeat fixed;
+    }
+
+    #sticky-scroll::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 40px,
+          rgba(255,255,255,0.03) 40px,
+          rgba(255,255,255,0.03) 41px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 40px,
+          rgba(255,255,255,0.03) 40px,
+          rgba(255,255,255,0.03) 41px
+        ),
+        linear-gradient(
+          180deg,
+          rgba(15,15,26,0.45) 0%,
+          rgba(15,15,26,0.55) 40%,
+          rgba(15,15,26,0.7) 100%
+        );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .sticky-scroll-header {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 100px 32px 40px;
+      text-align: center;
+    }
+
+    .scroll-panels {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 32px 100px;
+    }
+
+    .scroll-panel {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px 0;
+    }
+
+    .scroll-panel-card {
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 28px;
+      padding: 48px 40px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+    }
+
+    .scroll-panel .step-number {
+      font-size: 5rem;
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(135deg, #6c63ff, #48dbfb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+
+    .scroll-panel h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .scroll-panel p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.7;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       6. BENTO GRID LAYOUT
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #bento { background: #f5f5f7; }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto auto auto;
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    .bento-card {
+      background: white;
+      border-radius: 28px;
+      padding: 36px 32px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .bento-card:hover { transform: scale(1.015); }
+
+    .bento-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
+    .bento-card p  { font-size: 0.9rem; color: #666; }
+
+    .bento-card .bento-icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .bento-wide    { grid-column: span 2; }
+    .bento-tall    { grid-row: span 2; }
+    .bento-feature { grid-column: span 2; grid-row: span 2; }
+
+    .bento-dark {
+      background: #1a1a2e;
+      color: white;
+    }
+    .bento-dark p { color: rgba(255,255,255,0.6); }
+
+    .bento-gradient {
+      background: linear-gradient(135deg, #6c63ff, #a855f7);
+      color: white;
+    }
+    .bento-gradient p { color: rgba(255,255,255,0.75); }
+
+    .bento-img {
+      padding: 0;
+    }
+
+    .bento-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       7. GLASSMORPHISM CARDS
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #glass {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(108, 99, 255, 0.4), transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(255, 107, 107, 0.3), transparent 50%),
+        radial-gradient(circle at 50% 90%, rgba(72, 219, 251, 0.3), transparent 50%),
+        #1a1a2e;
+    }
+
+    .glass-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 900px;
+      padding: 60px 32px;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 28px;
+      padding: 36px 28px;
+      color: white;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-6px);
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    .glass-card .glass-icon {
+      font-size: 2rem;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .glass-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+    .glass-card p  { font-size: 0.88rem; color: rgba(255,255,255,0.6); }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       8. FLOATING KINETIC ELEMENTS
+       Continuous floating animation.
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #floating {
+      min-height: 80vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #fafafa 0%, #f0f0ff 100%);
+      padding: 100px 32px;
+    }
+
+    .floating-stage {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      height: 400px;
+      margin-top: 40px;
+    }
+
+    .float-element {
+      position: absolute;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+      cursor: default;
+      transition: transform 0.3s ease;
+    }
+
+    .float-element:hover {
+      z-index: 10;
+      transform: scale(1.2) !important;
+    }
+
+    .float-el-1 {
+      width: 120px; height: 120px;
+      background: linear-gradient(135deg, #6c63ff, #a855f7);
+      top: 10%; left: 10%;
+      animation: floatUp 6s ease-in-out infinite;
+    }
+
+    .float-el-2 {
+      width: 90px; height: 90px;
+      background: linear-gradient(135deg, #ff6b6b, #ffa502);
+      top: 50%; left: 30%;
+      animation: floatUp 8s ease-in-out infinite -2s;
+    }
+
+    .float-el-3 {
+      width: 150px; height: 150px;
+      background: linear-gradient(135deg, #0abde3, #48dbfb);
+      top: 20%; right: 15%;
+      animation: floatUp 7s ease-in-out infinite -4s;
+    }
+
+    .float-el-4 {
+      width: 70px; height: 70px;
+      background: linear-gradient(135deg, #2d6a4f, #52b788);
+      bottom: 15%; left: 50%;
+      animation: floatUp 9s ease-in-out infinite -1s;
+    }
+
+    .float-el-5 {
+      width: 100px; height: 100px;
+      background: linear-gradient(135deg, #1a1a2e, #6c63ff);
+      bottom: 10%; right: 20%;
+      animation: floatUp 5s ease-in-out infinite -3s;
+    }
+
+    .float-el-pill {
+      border-radius: 60px;
+      width: 160px; height: 60px;
+      font-size: 0.85rem;
+      background: linear-gradient(135deg, #ff6b6b, #a855f7);
+      top: 60%; left: 8%;
+      animation: floatUp 10s ease-in-out infinite -5s;
+    }
+
+    @keyframes floatUp {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      25% { transform: translateY(-20px) rotate(3deg); }
+      50% { transform: translateY(-10px) rotate(-2deg); }
+      75% { transform: translateY(-25px) rotate(1deg); }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       9. HORIZONTAL SCROLL SECTION
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #horizontal {
+      background: white;
+    }
+
+    .horizontal-outer {
+      height: 400vh;
+      position: relative;
+    }
+
+    .horizontal-sticky {
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    .horizontal-track {
+      display: flex;
+      gap: 32px;
+      padding: 0 64px;
+      will-change: transform;
+    }
+
+    .h-card {
+      flex: 0 0 min(420px, 80vw);
+      min-height: 350px;
+      border-radius: 32px;
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      overflow: hidden;
+      color: white;
+    }
+
+    .h-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 30%, rgba(0,0,0,0.6));
+      z-index: 1;
+    }
+
+    .h-card > * { position: relative; z-index: 2; }
+
+    .h-card-1 { background: linear-gradient(135deg, #6c63ff, #a855f7); }
+    .h-card-2 { background: linear-gradient(135deg, #ff6b6b, #ffa502); }
+    .h-card-3 { background: linear-gradient(135deg, #0abde3, #48dbfb); }
+    .h-card-4 { background: linear-gradient(135deg, #2d6a4f, #52b788); }
+    .h-card-5 { background: linear-gradient(135deg, #1a1a2e, #6c63ff); }
+
+    .h-card h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+    .h-card p  { font-size: 0.95rem; opacity: 0.85; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       10. CLIP-PATH GALLERY
+       Organic shapes using clip-path.
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #clip-gallery {
+      background: #0f0f1a;
+      padding: 100px 32px;
+      overflow: hidden;
+    }
+
+    .clip-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .clip-item {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.5s ease;
+      cursor: pointer;
+    }
+
+    .clip-item:hover { transform: scale(1.05); }
+
+    .clip-item img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .clip-item:hover img { transform: scale(1.1); }
+
+    .clip-circle {
+      clip-path: circle(48% at 50% 50%);
+    }
+
+    .clip-blob {
+      clip-path: path('M120,0 C180,20 200,80 180,140 C160,200 100,220 40,200 C-20,180 -20,100 20,50 C60,0 80,-10 120,0 Z');
+    }
+
+    .clip-hexagon {
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    }
+
+    .clip-diamond {
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    }
+
+    .clip-rounded-diamond {
+      clip-path: ellipse(50% 45% at 50% 50%);
+    }
+
+    .clip-leaf {
+      clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    }
+
+    .clip-arch {
+      border-radius: 50% 50% 8px 8px;
+      overflow: hidden;
+    }
+
+    .clip-squircle {
+      border-radius: 30%;
+      overflow: hidden;
+    }
+
+    .clip-item .clip-label {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .clip-item:hover .clip-label { opacity: 1; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       11. ORBIT ANIMATION
+       Elements rotating around a center.
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #orbit {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #f0f0ff, #fafafa);
+      padding: 100px 32px;
+      overflow: hidden;
+    }
+
+    .orbit-stage {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin-top: 48px;
+    }
+
+    .orbit-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6c63ff, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.4rem;
+      box-shadow: 0 0 60px rgba(108,99,255,0.3);
+      z-index: 2;
+    }
+
+    .orbit-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border: 1px dashed rgba(108,99,255,0.15);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .orbit-ring-1 { width: 220px; height: 220px; }
+    .orbit-ring-2 { width: 320px; height: 320px; }
+    .orbit-ring-3 { width: 400px; height: 400px; }
+
+    .orbit-item {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 50px;
+      height: 50px;
+      margin: -25px 0 0 -25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      background: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      z-index: 3;
+    }
+
+    .orbit-a1 { animation: orbitSpin1 12s linear infinite; }
+    .orbit-a2 { animation: orbitSpin2 16s linear infinite; }
+    .orbit-a3 { animation: orbitSpin3 20s linear infinite; }
+    .orbit-a4 { animation: orbitSpin1 14s linear infinite reverse; }
+    .orbit-a5 { animation: orbitSpin2 18s linear infinite reverse; }
+    .orbit-a6 { animation: orbitSpin3 22s linear infinite reverse; }
+
+    @keyframes orbitSpin1 {
+      from { transform: rotate(0deg) translateX(110px) rotate(0deg); }
+      to   { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
+    }
+
+    @keyframes orbitSpin2 {
+      from { transform: rotate(0deg) translateX(160px) rotate(0deg); }
+      to   { transform: rotate(360deg) translateX(160px) rotate(-360deg); }
+    }
+
+    @keyframes orbitSpin3 {
+      from { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+      to   { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       12. PULSE / RIPPLE BUTTONS
+       Animated pulse rings on buttons.
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #pulse-section {
+      background: #1a1a2e;
+      padding: 100px 32px;
+      text-align: center;
+    }
+
+    .pulse-grid {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 48px;
+    }
+
+    .pulse-btn {
+      position: relative;
+      padding: 16px 40px;
+      border: none;
+      border-radius: 60px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .pulse-btn:hover { transform: scale(1.05); }
+
+    .pulse-btn-1 { background: linear-gradient(135deg, #6c63ff, #a855f7); }
+    .pulse-btn-2 { background: linear-gradient(135deg, #ff6b6b, #ffa502); }
+    .pulse-btn-3 { background: linear-gradient(135deg, #0abde3, #48dbfb); }
+    .pulse-btn-4 { background: linear-gradient(135deg, #2d6a4f, #52b788); }
+
+    .pulse-btn::before,
+    .pulse-btn::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 60px;
+      border: 2px solid currentColor;
+      opacity: 0;
+      animation: pulseRing 2s ease-out infinite;
+    }
+
+    .pulse-btn::after {
+      animation-delay: 1s;
+    }
+
+    .pulse-btn-1::before, .pulse-btn-1::after { border-color: #6c63ff; }
+    .pulse-btn-2::before, .pulse-btn-2::after { border-color: #ff6b6b; }
+    .pulse-btn-3::before, .pulse-btn-3::after { border-color: #0abde3; }
+    .pulse-btn-4::before, .pulse-btn-4::after { border-color: #2d6a4f; }
+
+    @keyframes pulseRing {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       13. SCROLL REVEAL
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #reveal { background: #fafafa; }
+
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .reveal-card {
+      background: white;
+      border-radius: 28px;
+      padding: 40px 28px;
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .reveal-card:hover {
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    }
+
+    .reveal-card .r-icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .reveal-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+    .reveal-card p  { font-size: 0.88rem; color: #666; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       14. INFINITE MARQUEE TEXT
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .marquee-section {
+      overflow: hidden;
+      padding: 40px 0;
+      background: #1a1a2e;
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 20s linear infinite;
+    }
+
+    .marquee-track span {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(255,255,255,0.2);
+      white-space: nowrap;
+      padding: 0 40px;
+    }
+
+    .marquee-track span.filled {
+      color: white;
+      -webkit-text-stroke: 0;
+    }
+
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       15. TEXT SPLIT / STAGGER REVEAL
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #text-reveal {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      background: #fafafa;
+    }
+
+    .stagger-text {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 32px;
+    }
+
+    .stagger-line {
+      overflow: hidden;
+    }
+
+    .stagger-line span {
+      display: inline-block;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .stagger-line.visible span {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-line:nth-child(2) span { transition-delay: 0.15s; }
+    .stagger-line:nth-child(3) span { transition-delay: 0.3s; }
+    .stagger-line:nth-child(4) span { transition-delay: 0.45s; }
+
+    .stagger-text .stagger-accent {
+      font-style: italic;
+      background: linear-gradient(135deg, #6c63ff, #ff6b6b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       16. CSS-ONLY ACCORDION
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #accordion { background: white; }
+
+    .accordion-list {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .accordion-list details {
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .accordion-list summary {
+      padding: 24px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: color 0.2s;
+    }
+
+    .accordion-list summary::-webkit-details-marker { display: none; }
+
+    .accordion-list summary::after {
+      content: '+';
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #999;
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-list details[open] summary::after {
+      transform: rotate(45deg);
+    }
+
+    .accordion-list summary:hover { color: #6c63ff; }
+
+    .accordion-list .accordion-body {
+      padding: 0 0 24px;
+      font-size: 0.95rem;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       17. ANIMATED GRADIENT BORDER
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #gradient-border { background: #0f0f1a; }
+
+    .gradient-border-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    .gb-card {
+      position: relative;
+      border-radius: 28px;
+      padding: 2px;
+      background: conic-gradient(from var(--angle, 0deg), #6c63ff, #ff6b6b, #48dbfb, #ffa502, #6c63ff);
+      animation: rotateBorder 4s linear infinite;
+    }
+
+    .gb-card-inner {
+      background: #16162a;
+      border-radius: 26px;
+      padding: 36px 28px;
+      color: white;
+      height: 100%;
+    }
+
+    .gb-card-inner h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+    .gb-card-inner p  { font-size: 0.88rem; color: rgba(255,255,255,0.55); }
+    .gb-card-inner .gb-icon { font-size: 2rem; margin-bottom: 14px; display: block; }
+
+    @property --angle {
+      syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    @keyframes rotateBorder {
+      to { --angle: 360deg; }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       18. HOVER REVEAL CARDS
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #hover-reveal { background: white; }
+
+    .hover-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    .hover-card {
+      position: relative;
+      border-radius: 28px;
+      overflow: hidden;
+      aspect-ratio: 3 / 4;
+      cursor: pointer;
+    }
+
+    .hover-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .hover-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .hover-card .hover-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 40%, rgba(0,0,0,0.75));
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 32px 24px;
+      color: white;
+      transition: background 0.4s ease;
+    }
+
+    .hover-card:hover .hover-overlay {
+      background: linear-gradient(transparent 20%, rgba(108, 99, 255, 0.85));
+    }
+
+    .hover-card .hover-overlay h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .hover-card .hover-overlay p {
+      font-size: 0.85rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.4s ease 0.1s;
+    }
+
+    .hover-card:hover .hover-overlay p {
+      opacity: 0.9;
+      transform: translateY(0);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       19. SPACE — FLOATING ASTRONAUT
+       Full CSS space scene with stars,
+       nebula, and floating astronaut PNG.
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #space {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 0%, #0d0d2b 0%, #020210 70%);
+    }
+
+    .space-stars {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(3px 3px at 10% 20%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(2.5px 2.5px at 25% 65%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(3.5px 3.5px at 40% 10%, rgba(255,255,255,1), transparent),
+        radial-gradient(2px 2px at 55% 45%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(3px 3px at 70% 80%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(2.5px 2.5px at 85% 30%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(2px 2px at 15% 85%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(4px 4px at 90% 15%, rgba(255,255,255,1), transparent),
+        radial-gradient(2.5px 2.5px at 50% 50%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(3px 3px at 5% 50%, rgba(255,255,255,0.9), transparent);
+      animation: starsTwinkle 4s ease-in-out infinite alternate;
+    }
+
+    .space-stars-2 {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(2.5px 2.5px at 18% 35%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(3px 3px at 33% 78%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(2px 2px at 48% 22%, rgba(255,255,255,1), transparent),
+        radial-gradient(2.5px 2.5px at 62% 58%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(4px 4px at 78% 12%, rgba(255,255,255,1), transparent),
+        radial-gradient(2.5px 2.5px at 92% 68%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(3px 3px at 8% 92%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(2px 2px at 42% 88%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(2.5px 2.5px at 68% 42%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(3.5px 3.5px at 22% 8%, rgba(255,255,255,1), transparent);
+      animation: starsTwinkle 5s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes starsTwinkle {
+      0% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .space-nebula {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.2;
+    }
+
+    .nebula-1 {
+      width: 500px; height: 500px;
+      background: #6c63ff;
+      top: -10%; left: -10%;
+      animation: nebulaDrift 20s ease-in-out infinite;
+    }
+
+    .nebula-2 {
+      width: 400px; height: 400px;
+      background: #ff6b6b;
+      bottom: -5%; right: -5%;
+      animation: nebulaDrift 25s ease-in-out infinite reverse;
+    }
+
+    .nebula-3 {
+      width: 300px; height: 300px;
+      background: #48dbfb;
+      top: 40%; right: 20%;
+      animation: nebulaDrift 18s ease-in-out infinite -8s;
+    }
+
+    @keyframes nebulaDrift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(40px, -30px) scale(1.1); }
+      66% { transform: translate(-30px, 20px) scale(0.9); }
+    }
+
+    .astronaut-wrap {
+      position: relative;
+      z-index: 2;
+      animation: astronautFloat 8s ease-in-out infinite;
+    }
+
+    .astronaut-wrap img {
+      width: min(400px, 70vw);
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 0 40px rgba(108, 99, 255, 0.3));
+      animation: astronautSpin 30s linear infinite;
+    }
+
+    @keyframes astronautFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-40px); }
+    }
+
+    @keyframes astronautSpin {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(5deg); }
+      50% { transform: rotate(0deg); }
+      75% { transform: rotate(-5deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    .space-text {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: white;
+      margin-top: 40px;
+    }
+
+    .space-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #a89dff, #48dbfb, #ff6b6b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .space-text p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.5);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .space-planet {
+      position: absolute;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .planet-1 {
+      width: 60px; height: 60px;
+      background: radial-gradient(circle at 30% 30%, #ffa502, #ff6b6b);
+      bottom: 15%; left: 8%;
+      box-shadow: 0 0 30px rgba(255,165,2,0.3);
+      animation: planetOrbit 15s ease-in-out infinite;
+    }
+
+    .planet-2 {
+      width: 30px; height: 30px;
+      background: radial-gradient(circle at 30% 30%, #48dbfb, #0abde3);
+      top: 20%; right: 12%;
+      box-shadow: 0 0 20px rgba(72,219,251,0.3);
+      animation: planetOrbit 12s ease-in-out infinite -4s;
+    }
+
+    .planet-3 {
+      width: 18px; height: 18px;
+      background: radial-gradient(circle at 30% 30%, #a855f7, #6c63ff);
+      top: 35%; left: 15%;
+      box-shadow: 0 0 15px rgba(108,99,255,0.3);
+      animation: planetOrbit 18s ease-in-out infinite -9s;
+    }
+
+    @keyframes planetOrbit {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(20px, -15px); }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       20. COLOR FRAME GALLERY
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #color-frames {
+      padding: 0;
+      background: #fafafa;
+    }
+
+    .cf-header {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 32px 48px;
+    }
+
+    .cf-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 420px;
+      position: relative;
+    }
+
+    .cf-img {
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .cf-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cf-row > .cf-img:first-child {
+      padding-left: 100px;
+      margin-right: -60px;
+    }
+
+    .cf-row > .cf-img:last-child {
+      padding-right: 80px;
+      margin-left: -60px;
+    }
+
+    .cf-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 48px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cf-block h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: white;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .cf-block p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 380px;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .cf-block-btn {
+      display: inline-block;
+      padding: 12px 32px;
+      border: 2px solid rgba(255,255,255,0.6);
+      border-radius: 30px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      cursor: pointer;
+      background: transparent;
+      font-family: inherit;
+    }
+
+    .cf-block-btn:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: white;
+    }
+
+    .cf-row-purple { background: linear-gradient(135deg, #6c63ff, #a855f7); }
+    .cf-row-pink { background: linear-gradient(135deg, #ff6b6b, #a855f7); }
+    .cf-row-blue { background: linear-gradient(135deg, #48dbfb, #6c63ff); }
+
+    .cf-squares {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    .cf-sq {
+      position: absolute;
+      border-radius: 6px;
+      opacity: 0.15;
+    }
+
+    .cf-sq-1 { width: 80px; height: 80px; background: #fff; top: 10%; right: 8%; transform: rotate(15deg); }
+    .cf-sq-2 { width: 50px; height: 50px; background: #fff; bottom: 15%; left: 10%; border-radius: 50%; }
+    .cf-sq-3 { width: 60px; height: 60px; background: #fff; top: 50%; right: 20%; transform: rotate(-10deg); }
+    .cf-sq-4 { width: 40px; height: 40px; background: #fff; top: 20%; left: 15%; border-radius: 50%; }
+    .cf-sq-5 { width: 70px; height: 70px; background: #fff; bottom: 10%; right: 12%; transform: rotate(25deg); }
+    .cf-sq-6 { width: 45px; height: 45px; background: #fff; top: 15%; left: 8%; transform: rotate(-20deg); }
+    .cf-sq-7 { width: 55px; height: 55px; background: #fff; bottom: 20%; right: 15%; border-radius: 50%; }
+    .cf-sq-8 { width: 35px; height: 35px; background: #fff; bottom: 25%; left: 20%; transform: rotate(12deg); }
+    .cf-sq-9 { width: 65px; height: 65px; background: #fff; top: 12%; right: 10%; border-radius: 50%; }
+
+    @media (max-width: 900px) {
+      .cf-row {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .cf-img {
+        min-height: 280px;
+      }
+
+      .cf-block {
+        padding: 40px 24px;
+      }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       LANGUAGE TOGGLE
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .lang-toggle {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: rgba(108, 99, 255, 0.08);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(108, 99, 255, 0.12);
+      margin-left: 12px;
+    }
+
+    .lang-toggle button {
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 6px 14px;
+      cursor: pointer;
+      color: #666;
+      transition: all 0.25s;
+    }
+
+    .lang-toggle button.active {
+      background: #6c63ff;
+      color: white;
+    }
+
+    .lang-toggle button:hover:not(.active) {
+      color: #6c63ff;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       SCROLL-DRIVEN PROGRESS BAR
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .scroll-progress {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #6c63ff, #ff6b6b, #48dbfb);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       FOOTER
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .showcase-footer {
+      text-align: center;
+      padding: 60px 32px;
+      background: #1a1a2e;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.85rem;
+    }
+
+    .showcase-footer strong {
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       RESPONSIVE
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    @media (max-width: 900px) {
+      .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .bento-feature { grid-column: span 2; grid-row: span 1; }
+      .bento-wide { grid-column: span 2; }
+      .bento-tall { grid-row: span 1; }
+
+      .glass-grid,
+      .reveal-grid,
+      .gradient-border-grid,
+      .hover-grid,
+      .tilt-grid {
+        grid-template-columns: 1fr;
+        max-width: 450px;
+      }
+
+      .scroll-panel {
+        min-height: auto;
+        padding: 40px 0;
+      }
+
+      .scroll-panel-card {
+        padding: 32px 24px;
+      }
+
+      .clip-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .orbit-stage {
+        width: 300px;
+        height: 300px;
+      }
+
+      .orbit-ring-1 { width: 160px; height: 160px; }
+      .orbit-ring-2 { width: 240px; height: 240px; }
+      .orbit-ring-3 { width: 300px; height: 300px; }
+
+      .floating-stage { height: 300px; }
+    }
+
+    @media (max-width: 600px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-wide, .bento-tall, .bento-feature {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+      .clip-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <svg style="position:absolute;width:0;height:0;">
+    <defs>
+      <linearGradient id="waveGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#6c63ff"/>
+        <stop offset="50%" stop-color="#a855f7"/>
+        <stop offset="100%" stop-color="#ff6b6b"/>
+      </linearGradient>
+      <linearGradient id="waveGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#0abde3"/>
+        <stop offset="50%" stop-color="#48dbfb"/>
+        <stop offset="100%" stop-color="#6c63ff"/>
+      </linearGradient>
+      <linearGradient id="waveGrad3" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#ff6b6b"/>
+        <stop offset="50%" stop-color="#ffa502"/>
+        <stop offset="100%" stop-color="#a855f7"/>
+      </linearGradient>
+    </defs>
+  </svg>
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <!-- ── Table of Contents Nav ── -->
+  <nav class="toc-nav">
+    <div class="toc-nav-inner">
+      <span class="nav-brand">CSS Showcase</span>
+      <a href="#hero">Mesh Gradient</a>
+      <a href="#carousel">Carousel</a>
+      <a href="#blobs">Morphing Blobs</a>
+      <a href="#tilt-cards">3D Tilt</a>
+      <a href="#sticky-scroll">Sticky Scroll</a>
+      <a href="#bento">Bento Grid</a>
+      <a href="#glass">Glassmorphism</a>
+      <a href="#floating">Floating</a>
+      <a href="#horizontal">Horizontal</a>
+      <a href="#clip-gallery">Clip-Path</a>
+      <a href="#orbit">Orbit</a>
+      <a href="#pulse-section">Pulse</a>
+      <a href="#text-reveal">Text Stagger</a>
+      <a href="#reveal">Scroll Reveal</a>
+      <a href="#accordion">Accordion</a>
+      <a href="#gradient-border">Glow Borders</a>
+      <a href="#hover-reveal">Hover Reveal</a>
+      <a href="#color-frames">Color Frames</a>
+      <a href="#space">Space</a>
+    </div>
+    <div class="lang-toggle">
+      <button class="active" id="btn-en" onclick="setLanguage('en')">EN</button>
+      <button id="btn-es" onclick="setLanguage('es')">ES</button>
+    </div>
+  </nav>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       1. MESH GRADIENT HERO
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="hero">
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="hero-blob hero-blob-3"></div>
+    <span class="pattern-label">Pattern 1 — Mesh Gradient + Animated Blobs</span>
+    <h1>Modern CSS Patterns</h1>
+    <p>A hands-on showcase of the most popular HTML/CSS design techniques used in web development from 2024 onwards. Scroll down to explore each one.</p>
+    <div class="hero-chips">
+      <span>Scroll-Snap</span>
+      <span>Sticky Scroll</span>
+      <span>Bento Grid</span>
+      <span>Glassmorphism</span>
+      <span>Morphing Blobs</span>
+      <span>3D Tilt</span>
+      <span>Clip-Path Shapes</span>
+      <span>Orbit Animation</span>
+      <span>Floating Elements</span>
+      <span>Pulse Ripples</span>
+      <span>Marquee</span>
+      <span>Gradient Borders</span>
+      <span>Hover Effects</span>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MARQUEE DIVIDER
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span>Modern Design</span>
+      <span class="filled">CSS Patterns</span>
+      <span>No Frameworks</span>
+      <span class="filled">Pure HTML</span>
+      <span>Modern Design</span>
+      <span class="filled">CSS Patterns</span>
+      <span>No Frameworks</span>
+      <span class="filled">Pure HTML</span>
+    </div>
+  </div>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       2. CSS SCROLL-SNAP CAROUSEL (FIXED)
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="carousel">
+    <div class="section-pad">
+      <span class="pattern-label">Pattern 2 — CSS Scroll-Snap Carousel</span>
+      <h2 class="pattern-title">Swipeable Carousel</h2>
+      <p class="pattern-desc">Pure CSS carousel using <code>scroll-snap-type: x mandatory</code>. Navigate with the arrow buttons, swipe on mobile, or let auto-play cycle through the slides.</p>
+    </div>
+    <div class="carousel-wrapper">
+      <button class="carousel-nav-btn carousel-prev" id="carousel-prev" aria-label="Previous slide">&#10094;</button>
+      <button class="carousel-nav-btn carousel-next" id="carousel-next" aria-label="Next slide">&#10095;</button>
+      <div class="carousel-track" id="carousel-track">
+        <div class="carousel-slide">
+          <img src="Images/earth.jpg" alt="Earth from space">
+          <div class="slide-caption">
+            <h3>Our Planet</h3>
+            <p>Earth as seen from the International Space Station</p>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img src="Images/stary-sky.jpg" alt="Starry sky">
+          <div class="slide-caption">
+            <h3>The Night Sky</h3>
+            <p>Billions of stars stretching across the cosmos</p>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img src="Images/planet.jpg" alt="Galaxy">
+          <div class="slide-caption">
+            <h3>Deep Space</h3>
+            <p>Exploring the mysteries beyond our solar system</p>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img src="Images/muelle.jpg" alt="Landscape">
+          <div class="slide-caption">
+            <h3>Horizons</h3>
+            <p>Where earth meets sky in perfect stillness</p>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img src="Images/green.jpg" alt="Nature">
+          <div class="slide-caption">
+            <h3>Wilderness</h3>
+            <p>Untouched landscapes under open skies</p>
+          </div>
+        </div>
+        <div class="carousel-slide">
+          <img src="Images/muelle.jpg" alt="Scenic view">
+          <div class="slide-caption">
+            <h3>Serenity</h3>
+            <p>Finding peace in the vastness of nature</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-dots" id="carousel-dots"></div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       WAVE DIVIDER
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path class="wave-gradient-1" d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       3. MORPHING BLOB SHAPES
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="blobs">
+    <div class="blob-bg-float" style="width:500px;height:500px;background:#6c63ff;top:-150px;right:-100px;"></div>
+    <div class="blob-bg-float" style="width:400px;height:400px;background:#ff6b6b;bottom:-100px;left:-80px;animation-delay:-8s;"></div>
+    <div style="text-align:center;position:relative;z-index:1;">
+      <span class="pattern-label" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);">Pattern 3 — Morphing Blob Shapes</span>
+      <h2 class="pattern-title" style="color:white;">Organic, Alive, Never Square</h2>
+      <p class="pattern-desc" style="color:rgba(255,255,255,0.5);margin:0 auto 0;">Animated <code style="color:#a89dff;">border-radius</code> keyframes create organic blob shapes that continuously morph. No SVG needed — pure CSS.</p>
+    </div>
+    <div class="blob-container">
+      <div class="morph-blob blob-1">Design</div>
+      <div class="morph-blob blob-2">Motion</div>
+      <div class="morph-blob blob-3">Shape</div>
+      <div class="morph-blob blob-4">Flow</div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       WAVE DIVIDER (dark to light)
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div class="wave-divider flip">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path class="wave-gradient-2" d="M0,40 C360,0 720,80 1080,40 C1260,20 1380,30 1440,40 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       4. 3D PERSPECTIVE TILT CARDS
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="tilt-cards">
+    <div class="section-pad">
+      <span class="pattern-label">Pattern 4 — 3D Perspective Tilt</span>
+      <h2 class="pattern-title">Cards With Depth</h2>
+      <p class="pattern-desc">Hover triggers a 3D tilt using <code>perspective</code> and <code>rotateX/Y</code>. Circular icon shapes break the rectangular pattern.</p>
+    </div>
+    <div class="tilt-grid">
+      <div class="tilt-card">
+        <div class="tilt-icon tilt-icon-1">&#128171;</div>
+        <h3>perspective</h3>
+        <p>Set on the parent container to create a 3D space for child transforms.</p>
+      </div>
+      <div class="tilt-card">
+        <div class="tilt-icon tilt-icon-2">&#127912;</div>
+        <h3>rotateX / rotateY</h3>
+        <p>Tilt the card along axes to create that satisfying depth effect on hover.</p>
+      </div>
+      <div class="tilt-card">
+        <div class="tilt-icon tilt-icon-3">&#128302;</div>
+        <h3>preserve-3d</h3>
+        <p>Keeps child elements in the same 3D space so icons "pop out" toward you.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       5. STICKY IMAGE + SCROLLING CONTENT
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="sticky-scroll">
+    <div class="sticky-scroll-header">
+      <span class="pattern-label" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8);">Pattern 5 — Fixed Full-Screen Background</span>
+      <h2 class="pattern-title" style="color: white;">Image Covers the Screen,<br>Content Scrolls Over It</h2>
+      <p class="pattern-desc" style="color: rgba(255,255,255,0.6); margin: 0 auto;">The background image fills the entire viewport via <code style="color:#a89dff;">background-attachment: fixed</code>. Glass-effect panels scroll over it. A subtle grid pattern overlay adds texture.</p>
+    </div>
+    <div class="scroll-panels">
+      <div class="scroll-panel">
+        <div class="scroll-panel-card">
+          <div class="step-number">01</div>
+          <h3>How It Works</h3>
+          <p>The section uses <code>background: url(...) center / cover no-repeat fixed</code>. The <code>fixed</code> attachment locks the image to the viewport so it never moves while you scroll through the content.</p>
+        </div>
+      </div>
+      <div class="scroll-panel">
+        <div class="scroll-panel-card">
+          <div class="step-number">02</div>
+          <h3>Pattern Overlay</h3>
+          <p>A <code>::before</code> pseudo-element layers a repeating CSS grid texture and a dark gradient over the image. This adds depth and ensures text remains readable against any photo.</p>
+        </div>
+      </div>
+      <div class="scroll-panel">
+        <div class="scroll-panel-card">
+          <div class="step-number">03</div>
+          <h3>Glassmorphism Panels</h3>
+          <p>Each card uses <code>backdrop-filter: blur(24px)</code> with a semi-transparent background. As you scroll, the blurred image shifts behind each panel — creating a living, dynamic feel.</p>
+        </div>
+      </div>
+      <div class="scroll-panel">
+        <div class="scroll-panel-card">
+          <div class="step-number">04</div>
+          <h3>Use Cases</h3>
+          <p>Apple, Stripe, and Linear all use this for hero sections and storytelling. The full-bleed image creates immersion while scrolling text provides narrative context. Zero JavaScript needed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       6. BENTO GRID LAYOUT
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="bento">
+    <div class="section-pad">
+      <span class="pattern-label">Pattern 6 — Bento Grid Layout</span>
+      <h2 class="pattern-title">Bento Box Grid</h2>
+      <p class="pattern-desc">Asymmetric grid popularized by Apple. Cards of different sizes create visual hierarchy. Uses <code>grid-column: span</code> and <code>grid-row: span</code> for flexible layouts.</p>
+    </div>
+    <div class="bento-grid">
+      <div class="bento-card bento-feature bento-gradient">
+        <span class="bento-icon">&#9889;</span>
+        <h3>Feature Card</h3>
+        <p>This spans 2 columns and 2 rows using <code>grid-column: span 2; grid-row: span 2</code>. It becomes the focal point of the grid.</p>
+      </div>
+      <div class="bento-card">
+        <span class="bento-icon">&#128200;</span>
+        <h3>Analytics</h3>
+        <p>Standard 1x1 card with minimal content.</p>
+      </div>
+      <div class="bento-card bento-dark">
+        <span class="bento-icon">&#128274;</span>
+        <h3>Security</h3>
+        <p>Dark variant for contrast and emphasis.</p>
+      </div>
+      <div class="bento-card bento-wide">
+        <span class="bento-icon">&#127912;</span>
+        <h3>Design System</h3>
+        <p>Wide card spanning 2 columns. Use for content that needs horizontal space like charts or timelines.</p>
+      </div>
+      <div class="bento-card bento-img bento-tall">
+        <img src="Images/Atardecer.png" alt="Sunset">
+      </div>
+      <div class="bento-card">
+        <span class="bento-icon">&#128640;</span>
+        <h3>Performance</h3>
+        <p>Cards auto-fill the grid gaps.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       7. GLASSMORPHISM CARDS
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="glass">
+    <div class="section-pad" style="text-align: center;">
+      <span class="pattern-label" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8);">Pattern 7 — Glassmorphism</span>
+      <h2 class="pattern-title" style="color: white;">Frosted Glass Effect</h2>
+      <p class="pattern-desc" style="color: rgba(255,255,255,0.5); margin: 0 auto 32px;">Uses <code style="color: rgba(255,255,255,0.7);">backdrop-filter: blur(20px)</code> with semi-transparent backgrounds to create a frosted-glass look. The colorful blobs behind the cards show through.</p>
+    </div>
+    <div class="glass-grid">
+      <div class="glass-card">
+        <span class="glass-icon">&#127752;</span>
+        <h3>backdrop-filter</h3>
+        <p>The key property. Applies blur, brightness, or saturation to whatever is behind the element.</p>
+      </div>
+      <div class="glass-card">
+        <span class="glass-icon">&#128302;</span>
+        <h3>Transparency</h3>
+        <p>Use <code>rgba(255,255,255, 0.08)</code> backgrounds so the blur effect is visible through the card.</p>
+      </div>
+      <div class="glass-card">
+        <span class="glass-icon">&#128171;</span>
+        <h3>Subtle Borders</h3>
+        <p>A thin semi-transparent border like <code>1px solid rgba(255,255,255,0.12)</code> adds definition.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       WAVE DIVIDER
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path class="wave-gradient-3" d="M0,20 C240,70 480,0 720,40 C960,80 1200,10 1440,30 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       8. FLOATING KINETIC ELEMENTS
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="floating">
+    <div style="text-align:center;position:relative;z-index:2;">
+      <span class="pattern-label">Pattern 8 — Floating Kinetic Elements</span>
+      <h2 class="pattern-title">Everything Moves</h2>
+      <p class="pattern-desc" style="margin:0 auto 0;">Circles, pills, and orbs float endlessly using <code>@keyframes</code> with varying durations and delays. Hover any element to make it pop.</p>
+    </div>
+    <div class="floating-stage">
+      <div class="float-element float-el-1">&#9889;</div>
+      <div class="float-element float-el-2">&#128302;</div>
+      <div class="float-element float-el-3">&#127752;</div>
+      <div class="float-element float-el-4">&#128171;</div>
+      <div class="float-element float-el-5">&#128640;</div>
+      <div class="float-element float-el-pill">Pill Shape</div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       9. HORIZONTAL SCROLL SECTION
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="horizontal">
+    <div class="section-pad" style="padding-bottom: 20px;">
+      <span class="pattern-label">Pattern 9 — Horizontal Scroll</span>
+      <h2 class="pattern-title">Scroll Down, Move Sideways</h2>
+      <p class="pattern-desc">Vertical scrolling gets translated into horizontal card movement. The section uses a tall container with a <code>position: sticky</code> inner, and JavaScript translates scroll position to <code>translateX</code>.</p>
+    </div>
+    <div class="horizontal-outer" id="h-scroll-outer">
+      <div class="horizontal-sticky">
+        <div class="horizontal-track" id="h-track">
+          <div class="h-card h-card-1">
+            <h3>Step 1</h3>
+            <p>Tall outer container (400vh) creates scroll distance</p>
+          </div>
+          <div class="h-card h-card-2">
+            <h3>Step 2</h3>
+            <p>Sticky inner stays visible during scroll</p>
+          </div>
+          <div class="h-card h-card-3">
+            <h3>Step 3</h3>
+            <p>JavaScript maps scrollY to translateX</p>
+          </div>
+          <div class="h-card h-card-4">
+            <h3>Step 4</h3>
+            <p>Cards glide horizontally as you scroll down</p>
+          </div>
+          <div class="h-card h-card-5">
+            <h3>Step 5</h3>
+            <p>Widely used on modern portfolio and product sites</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       WAVE DIVIDER
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path class="wave-gradient-2" d="M0,60 C360,10 720,70 1080,30 C1260,15 1380,25 1440,20 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       10. CLIP-PATH GALLERY
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="clip-gallery">
+    <div class="section-pad" style="text-align:center;">
+      <span class="pattern-label" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);">Pattern 10 — Clip-Path Shapes</span>
+      <h2 class="pattern-title" style="color:white;">Beyond Rectangles</h2>
+      <p class="pattern-desc" style="color:rgba(255,255,255,0.5);margin:0 auto 32px;">CSS <code style="color:#a89dff;">clip-path</code> and creative <code style="color:#a89dff;">border-radius</code> turn images into circles, hexagons, arches, diamonds, and organic shapes.</p>
+    </div>
+    <div class="clip-grid">
+      <div class="clip-item clip-circle">
+        <img src="Images/earth.jpg" alt="Circle">
+        <span class="clip-label">circle()</span>
+      </div>
+      <div class="clip-item clip-hexagon">
+        <img src="Images/planet.jpg" alt="Hexagon">
+        <span class="clip-label">polygon() hexagon</span>
+      </div>
+      <div class="clip-item clip-arch">
+        <img src="Images/Atardecer.png" alt="Arch">
+        <span class="clip-label">border-radius arch</span>
+      </div>
+      <div class="clip-item clip-diamond">
+        <img src="Images/gray.jpg" alt="Diamond">
+        <span class="clip-label">polygon() diamond</span>
+      </div>
+      <div class="clip-item clip-squircle">
+        <img src="Images/muelle.jpg" alt="Squircle">
+        <span class="clip-label">border-radius: 30%</span>
+      </div>
+      <div class="clip-item clip-rounded-diamond">
+        <img src="Images/green.jpg" alt="Ellipse">
+        <span class="clip-label">ellipse()</span>
+      </div>
+      <div class="clip-item clip-leaf">
+        <img src="Images/muelle.jpg" alt="Pentagon">
+        <span class="clip-label">polygon() pentagon</span>
+      </div>
+      <div class="clip-item clip-circle">
+        <img src="Images/stary-sky.jpg" alt="Circle">
+        <span class="clip-label">circle()</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       WAVE DIVIDER (dark to light)
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div class="wave-divider flip">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path class="wave-gradient-1" d="M0,30 C360,70 720,10 1080,50 C1260,65 1380,55 1440,60 L1440,80 L0,80 Z"/>
+    </svg>
+  </div>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       11. ORBIT ANIMATION
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="orbit">
+    <div style="text-align:center;">
+      <span class="pattern-label">Pattern 11 — Orbit Animation</span>
+      <h2 class="pattern-title">Circular Motion</h2>
+      <p class="pattern-desc" style="margin:0 auto 0;">Elements orbit a central point using <code>transform: rotate() translateX() rotate()</code> to keep icons upright while revolving. Pure CSS, infinite motion.</p>
+    </div>
+    <div class="orbit-stage">
+      <div class="orbit-ring orbit-ring-1"></div>
+      <div class="orbit-ring orbit-ring-2"></div>
+      <div class="orbit-ring orbit-ring-3"></div>
+      <div class="orbit-center">CSS</div>
+      <div class="orbit-item orbit-a1">&#9889;</div>
+      <div class="orbit-item orbit-a2">&#128302;</div>
+      <div class="orbit-item orbit-a3">&#127912;</div>
+      <div class="orbit-item orbit-a4">&#128171;</div>
+      <div class="orbit-item orbit-a5">&#128640;</div>
+      <div class="orbit-item orbit-a6">&#127752;</div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       12. PULSE / RIPPLE BUTTONS
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="pulse-section">
+    <div style="position:relative;z-index:1;">
+      <span class="pattern-label" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);">Pattern 12 — Pulse / Ripple Effects</span>
+      <h2 class="pattern-title" style="color:white;">Animated Ripple Rings</h2>
+      <p class="pattern-desc" style="color:rgba(255,255,255,0.5);margin:0 auto 0;">Pill-shaped buttons with continuous pulse rings expanding outward. Uses <code style="color:#a89dff;">::before</code> and <code style="color:#a89dff;">::after</code> pseudo-elements with staggered animation delays.</p>
+    </div>
+    <div class="pulse-grid">
+      <button class="pulse-btn pulse-btn-1">Explore</button>
+      <button class="pulse-btn pulse-btn-2">Discover</button>
+      <button class="pulse-btn pulse-btn-3">Create</button>
+      <button class="pulse-btn pulse-btn-4">Build</button>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       13. TEXT STAGGER REVEAL
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="text-reveal">
+    <div class="stagger-text">
+      <span class="pattern-label">Pattern 13 — Staggered Text Reveal</span>
+      <div style="margin-top: 24px;">
+        <div class="stagger-line reveal-item"><span>Great design is</span></div>
+        <div class="stagger-line reveal-item"><span>not about decoration.</span></div>
+        <div class="stagger-line reveal-item"><span>It's about <em class="stagger-accent">communication</em></span></div>
+        <div class="stagger-line reveal-item"><span>through experience.</span></div>
+      </div>
+      <p class="pattern-desc" style="margin-top: 32px;">Each line slides up and fades in with a staggered delay. Uses <code>transition-delay</code> on nth-child selectors and Intersection Observer to trigger the <code>.visible</code> class.</p>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       14. REVEAL ON SCROLL
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="reveal">
+    <div class="section-pad">
+      <span class="pattern-label">Pattern 14 — Scroll Reveal Animation</span>
+      <h2 class="pattern-title">Fade In On Scroll</h2>
+      <p class="pattern-desc">Elements start invisible and translate upward as they enter the viewport. Uses the <code>IntersectionObserver</code> API to add a <code>.visible</code> class, which triggers CSS transitions.</p>
+    </div>
+    <div class="section-pad" style="padding-top: 0;">
+      <div class="reveal-grid">
+        <div class="reveal-card reveal-item">
+          <span class="r-icon">&#127919;</span>
+          <h3>IntersectionObserver</h3>
+          <p>The modern way to detect when elements enter the viewport. Much better than scroll event listeners.</p>
+        </div>
+        <div class="reveal-card reveal-item">
+          <span class="r-icon">&#127912;</span>
+          <h3>CSS Transitions</h3>
+          <p>The animation itself is pure CSS — opacity and transform. JS just toggles the class.</p>
+        </div>
+        <div class="reveal-card reveal-item">
+          <span class="r-icon">&#128640;</span>
+          <h3>Performance</h3>
+          <p>Only opacity and transform are animated — both are GPU-accelerated for silky 60fps motion.</p>
+        </div>
+        <div class="reveal-card reveal-item">
+          <span class="r-icon">&#9201;</span>
+          <h3>Stagger Delays</h3>
+          <p>Add increasing <code>transition-delay</code> to each child for a cascading entrance effect.</p>
+        </div>
+        <div class="reveal-card reveal-item">
+          <span class="r-icon">&#128065;</span>
+          <h3>threshold Option</h3>
+          <p>Controls how much of the element must be visible before triggering. Use 0.15 for early reveal.</p>
+        </div>
+        <div class="reveal-card reveal-item">
+          <span class="r-icon">&#128161;</span>
+          <h3>once: true</h3>
+          <p>Unobserve after first trigger so the animation only plays once and doesn't reverse on scroll-up.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MARQUEE DIVIDER 2
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div class="marquee-section" id="marquee">
+    <div class="section-pad" style="padding: 0 32px 20px; text-align: center;">
+      <span class="pattern-label" style="background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7);">Pattern 15 — Infinite Marquee Text</span>
+    </div>
+    <div class="marquee-track">
+      <span>Scroll</span>
+      <span class="filled">Explore</span>
+      <span>Discover</span>
+      <span class="filled">Create</span>
+      <span>Scroll</span>
+      <span class="filled">Explore</span>
+      <span>Discover</span>
+      <span class="filled">Create</span>
+    </div>
+    <p style="text-align: center; color: rgba(255,255,255,0.3); font-size: 0.85rem; padding: 20px 32px;">Pure CSS infinite scroll using <code style="color: rgba(255,255,255,0.5);">translateX(-50%)</code> animation on a duplicated track. Outlined text uses <code style="color: rgba(255,255,255,0.5);">-webkit-text-stroke</code>.</p>
+  </div>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       16. CSS-ONLY ACCORDION
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="accordion">
+    <div class="section-pad">
+      <span class="pattern-label">Pattern 16 — CSS-Only Accordion</span>
+      <h2 class="pattern-title">Native HTML Accordion</h2>
+      <p class="pattern-desc">Uses the <code>&lt;details&gt;</code> and <code>&lt;summary&gt;</code> HTML elements. Zero JavaScript. The browser handles open/close state natively. Style the marker and transitions with CSS.</p>
+    </div>
+    <div class="section-pad" style="padding-top: 0;">
+      <div class="accordion-list">
+        <details>
+          <summary>What is scroll-snap-type?</summary>
+          <div class="accordion-body">A CSS property that enables snap points in a scrollable container. Set it on the parent (<code>scroll-snap-type: x mandatory</code>) and on each child (<code>scroll-snap-align: start</code>). The browser automatically snaps to each element when the user finishes scrolling. No JavaScript needed.</div>
+        </details>
+        <details>
+          <summary>How does position: sticky work?</summary>
+          <div class="accordion-body">An element with <code>position: sticky</code> acts like <code>relative</code> until it reaches a scroll threshold (defined by <code>top</code>, <code>bottom</code>, etc.), then it acts like <code>fixed</code> — but only within its parent container. When the parent scrolls out of view, the sticky element goes with it.</div>
+        </details>
+        <details>
+          <summary>What is backdrop-filter?</summary>
+          <div class="accordion-body">A CSS property that applies effects (like blur, brightness, saturation) to the area behind an element. The most common use is <code>backdrop-filter: blur(20px)</code> for a frosted glass effect. The element needs a semi-transparent background for the effect to show through.</div>
+        </details>
+        <details>
+          <summary>When should I use CSS Grid vs Flexbox?</summary>
+          <div class="accordion-body">Use <strong>CSS Grid</strong> for two-dimensional layouts (rows AND columns) — page layouts, bento grids, dashboards. Use <strong>Flexbox</strong> for one-dimensional layouts (a single row OR column) — nav bars, card rows, centering content. They work great together: Grid for the page structure, Flexbox for components inside grid cells.</div>
+        </details>
+        <details>
+          <summary>What is the @property CSS rule?</summary>
+          <div class="accordion-body">A way to define custom CSS properties with type information. This enables CSS to animate custom properties that it normally can't — like <code>--angle</code> for rotating gradients. Without <code>@property</code>, CSS can't interpolate between custom property values during animations.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       17. ANIMATED GRADIENT BORDER
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="gradient-border">
+    <div class="section-pad">
+      <span class="pattern-label" style="background: rgba(108,99,255,0.15); color: #a89dff;">Pattern 17 — Animated Gradient Borders</span>
+      <h2 class="pattern-title" style="color: white;">Rotating Glow Borders</h2>
+      <p class="pattern-desc" style="color: rgba(255,255,255,0.5);">A <code style="color: #a89dff;">conic-gradient</code> background rotates using <code style="color: #a89dff;">@property</code> to animate the angle. A dark inner card with 2px less border-radius creates the glowing border illusion.</p>
+    </div>
+    <div class="gradient-border-grid">
+      <div class="gb-card">
+        <div class="gb-card-inner">
+          <span class="gb-icon">&#127752;</span>
+          <h3>conic-gradient</h3>
+          <p>Creates a gradient that sweeps around a center point — perfect for rotating border effects.</p>
+        </div>
+      </div>
+      <div class="gb-card">
+        <div class="gb-card-inner">
+          <span class="gb-icon">&#127912;</span>
+          <h3>@property Rule</h3>
+          <p>Registers <code>--angle</code> as an animatable &lt;angle&gt; type, enabling smooth rotation via CSS keyframes.</p>
+        </div>
+      </div>
+      <div class="gb-card">
+        <div class="gb-card-inner">
+          <span class="gb-icon">&#128302;</span>
+          <h3>Inner Card Trick</h3>
+          <p>The colored border is actually the parent's background. The inner card covers all but 2px of padding, revealing the glow.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       18. HOVER REVEAL CARDS
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="hover-reveal">
+    <div class="section-pad">
+      <span class="pattern-label">Pattern 18 — Hover Reveal Cards</span>
+      <h2 class="pattern-title">Hover to Discover</h2>
+      <p class="pattern-desc">Image cards with overlay text that transitions on hover. The image scales up, the gradient overlay changes color, and the description slides in with a delay — all pure CSS transitions.</p>
+    </div>
+    <div class="hover-grid">
+      <div class="hover-card">
+        <img src="Images/Astronauta.png" alt="Astronaut">
+        <div class="hover-overlay">
+          <h3>The Astronaut</h3>
+          <p>Hover triggers a color shift on the overlay gradient and reveals this description with a slide-up transition and slight delay.</p>
+        </div>
+      </div>
+      <div class="hover-card">
+        <img src="Images/gray.jpg" alt="Technology">
+        <div class="hover-overlay">
+          <h3>Innovation</h3>
+          <p>The image uses <code>transform: scale(1.08)</code> on hover for a subtle zoom that adds depth and dynamism.</p>
+        </div>
+      </div>
+      <div class="hover-card">
+        <img src="Images/Atardecer.png" alt="Sunset">
+        <div class="hover-overlay">
+          <h3>Golden Hour</h3>
+          <p>Combine gradient overlays with image transitions for cards that feel alive and interactive.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       19. COLOR FRAME GALLERY
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="color-frames">
+    <div class="cf-header">
+      <span class="pattern-label">Pattern 19 — Color Frame Gallery</span>
+      <h2 class="pattern-title">Images in Living Color</h2>
+      <p class="pattern-desc">Full-width rows pair a large photograph with a bold colored panel containing text and a call-to-action. The sides alternate per row, creating a magazine-style editorial layout with floating geometric shapes as decoration.</p>
+    </div>
+
+    <!-- Row 1: Image left, Text right — Purple -->
+    <div class="cf-row cf-row-purple">
+      <div class="cf-img">
+        <img src="Images/stary-sky.jpg" alt="Starry sky">
+      </div>
+      <div class="cf-block">
+        <div class="cf-squares">
+          <div class="cf-sq cf-sq-1"></div>
+          <div class="cf-sq cf-sq-2"></div>
+          <div class="cf-sq cf-sq-3"></div>
+        </div>
+        <h3>The Night Sky</h3>
+        <p>Billions of stars stretching across the cosmos, captured in vivid detail. This layout pairs bold imagery with solid color panels.</p>
+        <button class="cf-block-btn">Explore</button>
+      </div>
+    </div>
+
+    <!-- Row 2: Text left, Image right — Pink -->
+    <div class="cf-row cf-row-pink">
+      <div class="cf-block">
+        <div class="cf-squares">
+          <div class="cf-sq cf-sq-4"></div>
+          <div class="cf-sq cf-sq-5"></div>
+          <div class="cf-sq cf-sq-6"></div>
+        </div>
+        <h3>Golden Horizons</h3>
+        <p>Where earth meets sky in perfect stillness. Alternating sides create a visual zig-zag rhythm that guides the eye down the page.</p>
+        <button class="cf-block-btn">Discover</button>
+      </div>
+      <div class="cf-img">
+        <img src="Images/rosa.png" alt="Rosa">
+      </div>
+    </div>
+
+    <!-- Row 3: Image left, Text right — Blue -->
+    <div class="cf-row cf-row-blue">
+      <div class="cf-img">
+        <img src="Images/earth.jpg" alt="Earth from space">
+      </div>
+      <div class="cf-block">
+        <div class="cf-squares">
+          <div class="cf-sq cf-sq-7"></div>
+          <div class="cf-sq cf-sq-8"></div>
+          <div class="cf-sq cf-sq-9"></div>
+        </div>
+        <h3>Our Planet</h3>
+        <p>Earth as seen from the International Space Station. Floating white squares and circles add subtle texture to each color panel.</p>
+        <button class="cf-block-btn">Learn More</button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       20. SPACE — FLOATING ASTRONAUT
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <section id="space">
+    <div class="space-stars"></div>
+    <div class="space-stars-2"></div>
+    <div class="space-nebula nebula-1"></div>
+    <div class="space-nebula nebula-2"></div>
+    <div class="space-nebula nebula-3"></div>
+    <div class="space-planet planet-1"></div>
+    <div class="space-planet planet-2"></div>
+    <div class="space-planet planet-3"></div>
+    <span class="pattern-label" style="position:relative;z-index:2;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);">Pattern 20 — CSS Space Scene</span>
+    <div class="astronaut-wrap">
+      <img src="Images/Astronauta.png" alt="Floating Astronaut">
+    </div>
+    <div class="space-text">
+      <h2>Lost in Space</h2>
+      <p>A transparent-background PNG floats slowly over a pure CSS space scene — twinkling stars, drifting nebulae, and orbiting planets. Zero images for the background, only CSS.</p>
+    </div>
+  </section>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       FOOTER
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <footer class="showcase-footer">
+    <p><strong>Modern CSS/HTML Patterns Showcase</strong></p>
+    <p style="margin-top: 8px;">20 patterns · Pure HTML, CSS &amp; minimal JS · No frameworks or libraries</p>
+  </footer>
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       JAVASCRIPT
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <script>
+    // ── Scroll Progress Bar ──
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / scrollHeight) * 100;
+      document.getElementById('scroll-progress').style.width = progress + '%';
+    });
+
+    // ── Intersection Observer for Reveal Animations ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
+
+    // ── Horizontal Scroll Section ──
+    const hOuter = document.getElementById('h-scroll-outer');
+    const hTrack = document.getElementById('h-track');
+
+    if (hOuter && hTrack) {
+      window.addEventListener('scroll', () => {
+        const rect = hOuter.getBoundingClientRect();
+        const outerHeight = hOuter.offsetHeight;
+        const viewportH = window.innerHeight;
+        const scrollRange = outerHeight - viewportH;
+
+        if (rect.top <= 56 && rect.bottom >= viewportH) {
+          const scrolled = Math.abs(rect.top - 56);
+          const fraction = Math.min(scrolled / scrollRange, 1);
+          const trackWidth = hTrack.scrollWidth - window.innerWidth + 128;
+          hTrack.style.transform = `translateX(${-fraction * trackWidth}px)`;
+        }
+      });
+    }
+
+    // ── Carousel Navigation ──
+    const carouselTrack = document.getElementById('carousel-track');
+    const prevBtn = document.getElementById('carousel-prev');
+    const nextBtn = document.getElementById('carousel-next');
+    const dotsContainer = document.getElementById('carousel-dots');
+    const slides = carouselTrack ? carouselTrack.querySelectorAll('.carousel-slide') : [];
+    let currentSlide = 0;
+    let autoPlayTimer;
+
+    function getSlideWidth() {
+      if (!slides.length) return 0;
+      return slides[0].offsetWidth + 24;
+    }
+
+    function createDots() {
+      if (!dotsContainer) return;
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        dot.addEventListener('click', () => goToSlide(i));
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function updateDots() {
+      if (!dotsContainer) return;
+      dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+      });
+    }
+
+    function goToSlide(index) {
+      if (!carouselTrack || !slides.length) return;
+      const prev = currentSlide;
+      currentSlide = ((index % slides.length) + slides.length) % slides.length;
+      const wrapping = (prev === slides.length - 1 && currentSlide === 0) ||
+                       (prev === 0 && currentSlide === slides.length - 1);
+      if (wrapping) {
+        carouselTrack.style.scrollBehavior = 'auto';
+        carouselTrack.scrollLeft = currentSlide * getSlideWidth();
+        requestAnimationFrame(() => { carouselTrack.style.scrollBehavior = 'smooth'; });
+      } else {
+        carouselTrack.scrollTo({ left: currentSlide * getSlideWidth(), behavior: 'smooth' });
+      }
+      updateDots();
+    }
+
+    function resetAutoPlay() {
+      clearInterval(autoPlayTimer);
+      autoPlayTimer = setInterval(() => {
+        goToSlide(currentSlide + 1);
+      }, 4000);
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => { goToSlide(currentSlide - 1); resetAutoPlay(); });
+    if (nextBtn) nextBtn.addEventListener('click', () => { goToSlide(currentSlide + 1); resetAutoPlay(); });
+
+    if (carouselTrack) {
+      carouselTrack.addEventListener('scroll', () => {
+        const slideW = getSlideWidth();
+        if (slideW > 0) {
+          currentSlide = Math.round(carouselTrack.scrollLeft / slideW);
+          updateDots();
+        }
+      });
+    }
+
+    createDots();
+    resetAutoPlay();
+
+    // ── Language Toggle (EN / ES) ──
+    const translations = [
+      // Nav
+      { sel: '.nav-brand', es: 'Muestra CSS' },
+      { sel: '.toc-nav a[href="#hero"]', es: 'Gradiente Mesh' },
+      { sel: '.toc-nav a[href="#carousel"]', es: 'Carrusel' },
+      { sel: '.toc-nav a[href="#blobs"]', es: 'Blobs' },
+      { sel: '.toc-nav a[href="#tilt-cards"]', es: 'Inclinación 3D' },
+      { sel: '.toc-nav a[href="#sticky-scroll"]', es: 'Scroll Fijo' },
+      { sel: '.toc-nav a[href="#bento"]', es: 'Cuadrícula Bento' },
+      { sel: '.toc-nav a[href="#glass"]', es: 'Cristal Esmerilado' },
+      { sel: '.toc-nav a[href="#floating"]', es: 'Flotantes' },
+      { sel: '.toc-nav a[href="#horizontal"]', es: 'Horizontal' },
+      { sel: '.toc-nav a[href="#clip-gallery"]', es: 'Clip-Path' },
+      { sel: '.toc-nav a[href="#orbit"]', es: 'Órbita' },
+      { sel: '.toc-nav a[href="#pulse-section"]', es: 'Pulso' },
+      { sel: '.toc-nav a[href="#text-reveal"]', es: 'Texto Escalonado' },
+      { sel: '.toc-nav a[href="#reveal"]', es: 'Aparición' },
+      { sel: '.toc-nav a[href="#accordion"]', es: 'Acordeón' },
+      { sel: '.toc-nav a[href="#gradient-border"]', es: 'Bordes Brillantes' },
+      { sel: '.toc-nav a[href="#hover-reveal"]', es: 'Revelar al Pasar' },
+      { sel: '.toc-nav a[href="#space"]', es: 'Espacio' },
+
+      // Hero
+      { sel: '#hero .pattern-label', es: 'Patrón 1 — Gradiente Mesh + Blobs Animados' },
+      { sel: '#hero h1', es: 'Patrones CSS Modernos' },
+      { sel: '#hero > p', es: 'Una muestra práctica de las técnicas de diseño HTML/CSS más populares en desarrollo web desde 2024 en adelante. Desplázate hacia abajo para explorar cada una.' },
+
+      // Hero chips
+      { sel: '.hero-chips span:nth-child(3)', es: 'Cuadrícula Bento' },
+      { sel: '.hero-chips span:nth-child(4)', es: 'Cristal Esmerilado' },
+      { sel: '.hero-chips span:nth-child(5)', es: 'Blobs Cambiantes' },
+      { sel: '.hero-chips span:nth-child(6)', es: 'Inclinación 3D' },
+      { sel: '.hero-chips span:nth-child(7)', es: 'Formas Clip-Path' },
+      { sel: '.hero-chips span:nth-child(8)', es: 'Animación Orbital' },
+      { sel: '.hero-chips span:nth-child(9)', es: 'Elementos Flotantes' },
+      { sel: '.hero-chips span:nth-child(10)', es: 'Ondas de Pulso' },
+      { sel: '.hero-chips span:nth-child(12)', es: 'Bordes Degradados' },
+      { sel: '.hero-chips span:nth-child(13)', es: 'Efectos Hover' },
+
+      // Marquee 1
+      { sel: '.marquee-section:not(#marquee) .marquee-track span:nth-child(1)', es: 'Diseño Moderno' },
+      { sel: '.marquee-section:not(#marquee) .marquee-track span:nth-child(2)', es: 'Patrones CSS' },
+      { sel: '.marquee-section:not(#marquee) .marquee-track span:nth-child(3)', es: 'Sin Frameworks' },
+      { sel: '.marquee-section:not(#marquee) .marquee-track span:nth-child(4)', es: 'HTML Puro' },
+      { sel: '.marquee-section:not(#marquee) .marquee-track span:nth-child(5)', es: 'Diseño Moderno' },
+      { sel: '.marquee-section:not(#marquee) .marquee-track span:nth-child(6)', es: 'Patrones CSS' },
+      { sel: '.marquee-section:not(#marquee) .marquee-track span:nth-child(7)', es: 'Sin Frameworks' },
+      { sel: '.marquee-section:not(#marquee) .marquee-track span:nth-child(8)', es: 'HTML Puro' },
+
+      // Carousel
+      { sel: '#carousel .pattern-label', es: 'Patrón 2 — Carrusel CSS Scroll-Snap' },
+      { sel: '#carousel .pattern-title', es: 'Carrusel Deslizable' },
+      { sel: '#carousel .pattern-desc', es: 'Carrusel CSS puro usando <code>scroll-snap-type: x mandatory</code>. Navega con las flechas, desliza en móvil, o deja que la reproducción automática recorra las diapositivas.' },
+      { sel: '.carousel-slide:nth-child(1) h3', es: 'Nuestro Planeta' },
+      { sel: '.carousel-slide:nth-child(1) .slide-caption p', es: 'La Tierra vista desde la Estación Espacial Internacional' },
+      { sel: '.carousel-slide:nth-child(2) h3', es: 'El Cielo Nocturno' },
+      { sel: '.carousel-slide:nth-child(2) .slide-caption p', es: 'Miles de millones de estrellas extendiéndose por el cosmos' },
+      { sel: '.carousel-slide:nth-child(3) h3', es: 'Espacio Profundo' },
+      { sel: '.carousel-slide:nth-child(3) .slide-caption p', es: 'Explorando los misterios más allá de nuestro sistema solar' },
+      { sel: '.carousel-slide:nth-child(4) h3', es: 'Horizontes' },
+      { sel: '.carousel-slide:nth-child(4) .slide-caption p', es: 'Donde la tierra se encuentra con el cielo en perfecta quietud' },
+      { sel: '.carousel-slide:nth-child(5) h3', es: 'Naturaleza Salvaje' },
+      { sel: '.carousel-slide:nth-child(5) .slide-caption p', es: 'Paisajes vírgenes bajo cielos abiertos' },
+      { sel: '.carousel-slide:nth-child(6) h3', es: 'Serenidad' },
+      { sel: '.carousel-slide:nth-child(6) .slide-caption p', es: 'Encontrando paz en la inmensidad de la naturaleza' },
+
+      // Blobs
+      { sel: '#blobs .pattern-label', es: 'Patrón 3 — Formas Blob Cambiantes' },
+      { sel: '#blobs .pattern-title', es: 'Orgánico, Vivo, Nunca Cuadrado' },
+      { sel: '#blobs .pattern-desc', es: 'Los keyframes de <code style="color:#a89dff;">border-radius</code> animados crean formas blob orgánicas que se transforman continuamente. Sin SVG — CSS puro.' },
+      { sel: '.morph-blob.blob-1', es: 'Diseño' },
+      { sel: '.morph-blob.blob-2', es: 'Movimiento' },
+      { sel: '.morph-blob.blob-3', es: 'Forma' },
+      { sel: '.morph-blob.blob-4', es: 'Flujo' },
+
+      // Tilt Cards
+      { sel: '#tilt-cards .pattern-label', es: 'Patrón 4 — Inclinación en Perspectiva 3D' },
+      { sel: '#tilt-cards .pattern-title', es: 'Tarjetas con Profundidad' },
+      { sel: '#tilt-cards .pattern-desc', es: 'Al pasar el ratón se activa una inclinación 3D usando <code>perspective</code> y <code>rotateX/Y</code>. Los iconos circulares rompen el patrón rectangular.' },
+      { sel: '.tilt-card:nth-child(1) p', es: 'Se establece en el contenedor padre para crear un espacio 3D para las transformaciones de los hijos.' },
+      { sel: '.tilt-card:nth-child(2) p', es: 'Inclina la tarjeta a lo largo de los ejes para crear ese efecto de profundidad satisfactorio al pasar el ratón.' },
+      { sel: '.tilt-card:nth-child(3) p', es: 'Mantiene los elementos hijos en el mismo espacio 3D para que los iconos "sobresalgan" hacia ti.' },
+
+      // Sticky Scroll
+      { sel: '#sticky-scroll .pattern-label', es: 'Patrón 5 — Fondo Fijo a Pantalla Completa' },
+      { sel: '#sticky-scroll .pattern-title', es: 'La Imagen Cubre la Pantalla,<br>El Contenido Se Desplaza Encima' },
+      { sel: '#sticky-scroll .pattern-desc', es: 'La imagen de fondo llena toda la ventana con <code style="color:#a89dff;">background-attachment: fixed</code>. Los paneles con efecto cristal se desplazan sobre ella. Una sutil cuadrícula como textura agrega profundidad.' },
+      { sel: '.scroll-panel:nth-child(1) h3', es: 'Cómo Funciona' },
+      { sel: '.scroll-panel:nth-child(1) .scroll-panel-card p', es: 'La sección usa <code>background: url(...) center / cover no-repeat fixed</code>. El valor <code>fixed</code> fija la imagen a la ventana para que nunca se mueva mientras te desplazas por el contenido.' },
+      { sel: '.scroll-panel:nth-child(2) h3', es: 'Capa de Patrón' },
+      { sel: '.scroll-panel:nth-child(2) .scroll-panel-card p', es: 'Un pseudo-elemento <code>::before</code> superpone una textura de cuadrícula CSS repetida y un degradado oscuro sobre la imagen. Esto añade profundidad y asegura que el texto sea legible sobre cualquier foto.' },
+      { sel: '.scroll-panel:nth-child(3) h3', es: 'Paneles de Cristal' },
+      { sel: '.scroll-panel:nth-child(3) .scroll-panel-card p', es: 'Cada tarjeta usa <code>backdrop-filter: blur(24px)</code> con un fondo semi-transparente. Al desplazarte, la imagen borrosa cambia detrás de cada panel — creando una sensación viva y dinámica.' },
+      { sel: '.scroll-panel:nth-child(4) h3', es: 'Casos de Uso' },
+      { sel: '.scroll-panel:nth-child(4) .scroll-panel-card p', es: 'Apple, Stripe y Linear usan esto para secciones hero y narrativas. La imagen a sangre completa crea inmersión mientras el texto desplazable proporciona contexto narrativo. Sin JavaScript necesario.' },
+
+      // Bento Grid
+      { sel: '#bento .pattern-label', es: 'Patrón 6 — Cuadrícula Bento' },
+      { sel: '#bento .pattern-title', es: 'Cuadrícula Estilo Bento' },
+      { sel: '#bento .pattern-desc', es: 'Cuadrícula asimétrica popularizada por Apple. Tarjetas de diferentes tamaños crean jerarquía visual. Usa <code>grid-column: span</code> y <code>grid-row: span</code> para diseños flexibles.' },
+      { sel: '.bento-feature h3', es: 'Tarjeta Destacada' },
+      { sel: '.bento-feature p', es: 'Ocupa 2 columnas y 2 filas usando <code>grid-column: span 2; grid-row: span 2</code>. Se convierte en el punto focal de la cuadrícula.' },
+      { sel: '.bento-card:nth-child(2) h3', es: 'Analítica' },
+      { sel: '.bento-card:nth-child(2) p', es: 'Tarjeta estándar 1x1 con contenido mínimo.' },
+      { sel: '.bento-dark h3', es: 'Seguridad' },
+      { sel: '.bento-dark p', es: 'Variante oscura para contraste y énfasis.' },
+      { sel: '.bento-wide h3', es: 'Sistema de Diseño' },
+      { sel: '.bento-wide p', es: 'Tarjeta ancha que ocupa 2 columnas. Úsala para contenido que necesita espacio horizontal como gráficos o líneas de tiempo.' },
+      { sel: '.bento-card:nth-child(6) h3', es: 'Rendimiento' },
+      { sel: '.bento-card:nth-child(6) p', es: 'Las tarjetas llenan automáticamente los espacios de la cuadrícula.' },
+
+      // Glassmorphism
+      { sel: '#glass .pattern-label', es: 'Patrón 7 — Cristal Esmerilado' },
+      { sel: '#glass .pattern-title', es: 'Efecto Cristal Esmerilado' },
+      { sel: '#glass .pattern-desc', es: 'Usa <code style="color: rgba(255,255,255,0.7);">backdrop-filter: blur(20px)</code> con fondos semi-transparentes para crear un aspecto de vidrio esmerilado. Los blobs coloridos detrás de las tarjetas se ven a través.' },
+      { sel: '.glass-card:nth-child(1) h3', es: 'backdrop-filter' },
+      { sel: '.glass-card:nth-child(1) p', es: 'La propiedad clave. Aplica desenfoque, brillo o saturación a lo que esté detrás del elemento.' },
+      { sel: '.glass-card:nth-child(2) h3', es: 'Transparencia' },
+      { sel: '.glass-card:nth-child(2) p', es: 'Usa fondos <code>rgba(255,255,255, 0.08)</code> para que el efecto de desenfoque sea visible a través de la tarjeta.' },
+      { sel: '.glass-card:nth-child(3) h3', es: 'Bordes Sutiles' },
+      { sel: '.glass-card:nth-child(3) p', es: 'Un borde fino semi-transparente como <code>1px solid rgba(255,255,255,0.12)</code> añade definición.' },
+
+      // Floating
+      { sel: '#floating .pattern-label', es: 'Patrón 8 — Elementos Cinéticos Flotantes' },
+      { sel: '#floating .pattern-title', es: 'Todo Se Mueve' },
+      { sel: '#floating .pattern-desc', es: 'Círculos, pastillas y orbes flotan infinitamente usando <code>@keyframes</code> con duraciones y retrasos variados. Pasa el ratón sobre cualquier elemento para hacerlo resaltar.' },
+      { sel: '.float-el-pill', es: 'Forma Pastilla' },
+
+      // Horizontal Scroll
+      { sel: '#horizontal .pattern-label', es: 'Patrón 9 — Scroll Horizontal' },
+      { sel: '#horizontal .pattern-title', es: 'Desplázate Abajo, Mueve a los Lados' },
+      { sel: '#horizontal .pattern-desc', es: 'El desplazamiento vertical se traduce en movimiento horizontal de tarjetas. La sección usa un contenedor alto con un interior <code>position: sticky</code>, y JavaScript traduce la posición de scroll a <code>translateX</code>.' },
+      { sel: '.h-card:nth-child(1) h3', es: 'Paso 1' },
+      { sel: '.h-card:nth-child(1) p', es: 'Un contenedor externo alto (400vh) crea distancia de desplazamiento' },
+      { sel: '.h-card:nth-child(2) h3', es: 'Paso 2' },
+      { sel: '.h-card:nth-child(2) p', es: 'El interior sticky permanece visible durante el desplazamiento' },
+      { sel: '.h-card:nth-child(3) h3', es: 'Paso 3' },
+      { sel: '.h-card:nth-child(3) p', es: 'JavaScript mapea scrollY a translateX' },
+      { sel: '.h-card:nth-child(4) h3', es: 'Paso 4' },
+      { sel: '.h-card:nth-child(4) p', es: 'Las tarjetas se deslizan horizontalmente mientras te desplazas' },
+      { sel: '.h-card:nth-child(5) h3', es: 'Paso 5' },
+      { sel: '.h-card:nth-child(5) p', es: 'Ampliamente usado en sitios modernos de portafolio y producto' },
+
+      // Clip-Path
+      { sel: '#clip-gallery .pattern-label', es: 'Patrón 10 — Formas Clip-Path' },
+      { sel: '#clip-gallery .pattern-title', es: 'Más Allá de los Rectángulos' },
+      { sel: '#clip-gallery .pattern-desc', es: 'CSS <code style="color:#a89dff;">clip-path</code> y <code style="color:#a89dff;">border-radius</code> creativo convierten imágenes en círculos, hexágonos, arcos, diamantes y formas orgánicas.' },
+      { sel: '.clip-circle:nth-child(1) .clip-label', es: 'circle()' },
+      { sel: '.clip-hexagon .clip-label', es: 'polygon() hexágono' },
+      { sel: '.clip-arch .clip-label', es: 'border-radius arco' },
+      { sel: '.clip-diamond .clip-label', es: 'polygon() diamante' },
+      { sel: '.clip-squircle .clip-label', es: 'border-radius: 30%' },
+      { sel: '.clip-rounded-diamond .clip-label', es: 'ellipse()' },
+      { sel: '.clip-leaf .clip-label', es: 'polygon() pentágono' },
+      { sel: '.clip-circle:nth-child(8) .clip-label', es: 'circle()' },
+
+      // Orbit
+      { sel: '#orbit .pattern-label', es: 'Patrón 11 — Animación Orbital' },
+      { sel: '#orbit .pattern-title', es: 'Movimiento Circular' },
+      { sel: '#orbit .pattern-desc', es: 'Los elementos orbitan un punto central usando <code>transform: rotate() translateX() rotate()</code> para mantener los iconos en posición vertical mientras giran. CSS puro, movimiento infinito.' },
+
+      // Pulse
+      { sel: '#pulse-section .pattern-label', es: 'Patrón 12 — Efectos de Pulso / Onda' },
+      { sel: '#pulse-section .pattern-title', es: 'Anillos de Onda Animados' },
+      { sel: '#pulse-section .pattern-desc', es: 'Botones en forma de pastilla con anillos de pulso que se expanden continuamente. Usa pseudo-elementos <code style="color:#a89dff;">::before</code> y <code style="color:#a89dff;">::after</code> con retrasos de animación escalonados.' },
+      { sel: '.pulse-btn-1', es: 'Explorar' },
+      { sel: '.pulse-btn-2', es: 'Descubrir' },
+      { sel: '.pulse-btn-3', es: 'Crear' },
+      { sel: '.pulse-btn-4', es: 'Construir' },
+
+      // Text Stagger
+      { sel: '#text-reveal .pattern-label', es: 'Patrón 13 — Revelado Escalonado de Texto' },
+      { sel: '.stagger-line:nth-child(1) span', es: 'El gran diseño no se trata' },
+      { sel: '.stagger-line:nth-child(2) span', es: 'de decoración.' },
+      { sel: '.stagger-line:nth-child(3) span', es: 'Se trata de <em class="stagger-accent">comunicación</em>' },
+      { sel: '.stagger-line:nth-child(4) span', es: 'a través de la experiencia.' },
+      { sel: '#text-reveal .pattern-desc', es: 'Cada línea sube y aparece con un retraso escalonado. Usa <code>transition-delay</code> en selectores nth-child e Intersection Observer para activar la clase <code>.visible</code>.' },
+
+      // Scroll Reveal
+      { sel: '#reveal .pattern-label', es: 'Patrón 14 — Animación de Aparición al Desplazar' },
+      { sel: '#reveal .pattern-title', es: 'Aparición al Desplazar' },
+      { sel: '#reveal .pattern-desc', es: 'Los elementos comienzan invisibles y se desplazan hacia arriba al entrar en la ventana. Usa la API <code>IntersectionObserver</code> para añadir la clase <code>.visible</code>, que activa transiciones CSS.' },
+      { sel: '.reveal-card:nth-child(1) h3', es: 'IntersectionObserver' },
+      { sel: '.reveal-card:nth-child(1) p', es: 'La forma moderna de detectar cuándo los elementos entran en la ventana. Mucho mejor que los listeners de evento scroll.' },
+      { sel: '.reveal-card:nth-child(2) h3', es: 'Transiciones CSS' },
+      { sel: '.reveal-card:nth-child(2) p', es: 'La animación en sí es CSS puro — opacidad y transformación. JS solo alterna la clase.' },
+      { sel: '.reveal-card:nth-child(3) h3', es: 'Rendimiento' },
+      { sel: '.reveal-card:nth-child(3) p', es: 'Solo se animan opacidad y transformación — ambas aceleradas por GPU para un movimiento suave a 60fps.' },
+      { sel: '.reveal-card:nth-child(4) h3', es: 'Retrasos Escalonados' },
+      { sel: '.reveal-card:nth-child(4) p', es: 'Añade <code>transition-delay</code> creciente a cada hijo para un efecto de entrada en cascada.' },
+      { sel: '.reveal-card:nth-child(5) h3', es: 'Opción threshold' },
+      { sel: '.reveal-card:nth-child(5) p', es: 'Controla cuánto del elemento debe ser visible antes de activarse. Usa 0.15 para revelado temprano.' },
+      { sel: '.reveal-card:nth-child(6) h3', es: 'once: true' },
+      { sel: '.reveal-card:nth-child(6) p', es: 'Deja de observar después de la primera activación para que la animación solo se reproduzca una vez y no se revierta al desplazarte hacia arriba.' },
+
+      // Marquee 2
+      { sel: '#marquee .pattern-label', es: 'Patrón 15 — Texto Marquesina Infinito' },
+      { sel: '#marquee .marquee-track span:nth-child(1)', es: 'Desplazar' },
+      { sel: '#marquee .marquee-track span:nth-child(2)', es: 'Explorar' },
+      { sel: '#marquee .marquee-track span:nth-child(3)', es: 'Descubrir' },
+      { sel: '#marquee .marquee-track span:nth-child(4)', es: 'Crear' },
+      { sel: '#marquee .marquee-track span:nth-child(5)', es: 'Desplazar' },
+      { sel: '#marquee .marquee-track span:nth-child(6)', es: 'Explorar' },
+      { sel: '#marquee .marquee-track span:nth-child(7)', es: 'Descubrir' },
+      { sel: '#marquee .marquee-track span:nth-child(8)', es: 'Crear' },
+      { sel: '#marquee > p', es: 'Scroll infinito en CSS puro usando animación <code style="color: rgba(255,255,255,0.5);">translateX(-50%)</code> en una pista duplicada. El texto con contorno usa <code style="color: rgba(255,255,255,0.5);">-webkit-text-stroke</code>.' },
+
+      // Accordion
+      { sel: '#accordion .pattern-label', es: 'Patrón 16 — Acordeón Solo CSS' },
+      { sel: '#accordion .pattern-title', es: 'Acordeón HTML Nativo' },
+      { sel: '#accordion .pattern-desc', es: 'Usa los elementos HTML <code>&lt;details&gt;</code> y <code>&lt;summary&gt;</code>. Sin JavaScript. El navegador maneja el estado abrir/cerrar de forma nativa. Estiliza el marcador y las transiciones con CSS.' },
+      { sel: 'details:nth-child(1) summary', es: '¿Qué es scroll-snap-type?' },
+      { sel: 'details:nth-child(1) .accordion-body', es: 'Una propiedad CSS que habilita puntos de anclaje en un contenedor desplazable. Se establece en el padre (<code>scroll-snap-type: x mandatory</code>) y en cada hijo (<code>scroll-snap-align: start</code>). El navegador automáticamente se ancla a cada elemento cuando el usuario termina de desplazarse. Sin JavaScript necesario.' },
+      { sel: 'details:nth-child(2) summary', es: '¿Cómo funciona position: sticky?' },
+      { sel: 'details:nth-child(2) .accordion-body', es: 'Un elemento con <code>position: sticky</code> actúa como <code>relative</code> hasta que alcanza un umbral de desplazamiento (definido por <code>top</code>, <code>bottom</code>, etc.), entonces actúa como <code>fixed</code> — pero solo dentro de su contenedor padre. Cuando el padre sale de la vista, el elemento sticky se va con él.' },
+      { sel: 'details:nth-child(3) summary', es: '¿Qué es backdrop-filter?' },
+      { sel: 'details:nth-child(3) .accordion-body', es: 'Una propiedad CSS que aplica efectos (como desenfoque, brillo, saturación) al área detrás de un elemento. El uso más común es <code>backdrop-filter: blur(20px)</code> para un efecto de vidrio esmerilado. El elemento necesita un fondo semi-transparente para que el efecto se vea.' },
+      { sel: 'details:nth-child(4) summary', es: '¿Cuándo usar CSS Grid vs Flexbox?' },
+      { sel: 'details:nth-child(4) .accordion-body', es: 'Usa <strong>CSS Grid</strong> para diseños bidimensionales (filas Y columnas) — diseños de página, cuadrículas bento, dashboards. Usa <strong>Flexbox</strong> para diseños unidimensionales (una sola fila O columna) — barras de navegación, filas de tarjetas, centrar contenido. Funcionan muy bien juntos: Grid para la estructura de la página, Flexbox para componentes dentro de celdas grid.' },
+      { sel: 'details:nth-child(5) summary', es: '¿Qué es la regla @property de CSS?' },
+      { sel: 'details:nth-child(5) .accordion-body', es: 'Una forma de definir propiedades CSS personalizadas con información de tipo. Esto permite que CSS anime propiedades personalizadas que normalmente no puede — como <code>--angle</code> para rotar degradados. Sin <code>@property</code>, CSS no puede interpolar entre valores de propiedades personalizadas durante las animaciones.' },
+
+      // Gradient Border
+      { sel: '#gradient-border .pattern-label', es: 'Patrón 17 — Bordes Degradados Animados' },
+      { sel: '#gradient-border .pattern-title', es: 'Bordes Brillantes Giratorios' },
+      { sel: '#gradient-border .pattern-desc', es: 'Un fondo <code style="color: #a89dff;">conic-gradient</code> rota usando <code style="color: #a89dff;">@property</code> para animar el ángulo. Una tarjeta interior oscura con 2px menos de border-radius crea la ilusión de borde brillante.' },
+      { sel: '.gb-card:nth-child(1) h3', es: 'conic-gradient' },
+      { sel: '.gb-card:nth-child(1) p', es: 'Crea un degradado que gira alrededor de un punto central — perfecto para efectos de borde giratorio.' },
+      { sel: '.gb-card:nth-child(2) h3', es: 'Regla @property' },
+      { sel: '.gb-card:nth-child(2) p', es: 'Registra <code>--angle</code> como un tipo &lt;angle&gt; animable, permitiendo rotación suave mediante keyframes CSS.' },
+      { sel: '.gb-card:nth-child(3) h3', es: 'Truco de Tarjeta Interior' },
+      { sel: '.gb-card:nth-child(3) p', es: 'El borde coloreado es en realidad el fondo del padre. La tarjeta interior cubre todo excepto 2px de padding, revelando el brillo.' },
+
+      // Hover Reveal
+      { sel: '#hover-reveal .pattern-label', es: 'Patrón 18 — Tarjetas de Revelado al Pasar' },
+      { sel: '#hover-reveal .pattern-title', es: 'Pasa el Ratón para Descubrir' },
+      { sel: '#hover-reveal .pattern-desc', es: 'Tarjetas con imagen y texto superpuesto que aparece al pasar el ratón. La imagen se amplía, el degradado cambia de color, y la descripción se desliza con un retraso — todo con transiciones CSS puras.' },
+      { sel: '.hover-card:nth-child(1) h3', es: 'El Astronauta' },
+      { sel: '.hover-card:nth-child(1) .hover-overlay p', es: 'Al pasar el ratón se activa un cambio de color en el degradado y se revela esta descripción con una transición de deslizamiento y un leve retraso.' },
+      { sel: '.hover-card:nth-child(2) h3', es: 'Innovación' },
+      { sel: '.hover-card:nth-child(2) .hover-overlay p', es: 'La imagen usa <code>transform: scale(1.08)</code> al pasar el ratón para un zoom sutil que añade profundidad y dinamismo.' },
+      { sel: '.hover-card:nth-child(3) h3', es: 'Hora Dorada' },
+      { sel: '.hover-card:nth-child(3) .hover-overlay p', es: 'Combina degradados superpuestos con transiciones de imagen para tarjetas que se sienten vivas e interactivas.' },
+
+      // Space
+      { sel: '#space .pattern-label', es: 'Patrón 20 — Escena Espacial CSS' },
+      { sel: '.space-text h2', es: 'Perdido en el Espacio' },
+      { sel: '.space-text p', es: 'Un PNG con fondo transparente flota lentamente sobre una escena espacial hecha en CSS puro — estrellas titilantes, nebulosas a la deriva y planetas orbitando. Sin imágenes para el fondo, solo CSS.' },
+
+      // Color Frames
+      { sel: '.toc-nav a[href="#color-frames"]', es: 'Marcos de Color' },
+      { sel: '#color-frames .pattern-label', es: 'Patrón 19 — Galería de Marcos de Color' },
+      { sel: '#color-frames .pattern-title', es: 'Imágenes en Color Vivo' },
+      { sel: '#color-frames .pattern-desc', es: 'Fotos enmarcadas por bloques de colores vibrantes y muestras geométricas flotantes. Un mosaico de CSS Grid donde imágenes y celdas de color sólido se entrelazan — pasa el ratón sobre una imagen para un zoom sutil, sobre una muestra para resaltarla.' },
+
+      // Footer
+      { sel: '.showcase-footer strong', es: 'Muestra de Patrones CSS/HTML Modernos' },
+      { sel: '.showcase-footer p:nth-child(2)', es: '20 patrones · HTML, CSS puro y JS mínimo · Sin frameworks ni librerías' },
+    ];
+
+    const originalTexts = new Map();
+    let currentLang = 'en';
+
+    function setLanguage(lang) {
+      if (lang === currentLang) return;
+      currentLang = lang;
+
+      translations.forEach(({ sel, es }) => {
+        const el = document.querySelector(sel);
+        if (!el) return;
+        if (lang === 'es') {
+          if (!originalTexts.has(sel)) originalTexts.set(sel, el.innerHTML);
+          el.innerHTML = es;
+        } else {
+          const orig = originalTexts.get(sel);
+          if (orig !== undefined) el.innerHTML = orig;
+        }
+      });
+
+      document.documentElement.lang = lang;
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+    }
+  </script>
+</body>
+</html>
